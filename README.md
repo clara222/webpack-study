@@ -87,6 +87,8 @@ output: {
 ```
 npm i webpack-dev-server –D
 ```
+webpack-dev-server是将文件打包到内存中，有助于开发
+
 在webpack.config.js 中，添加 ```devServer:{ }```
 * contentBase :配置开发服务运行时的文件根目录
 * open: true 自动打开浏览器
@@ -94,6 +96,13 @@ npm i webpack-dev-server –D
 * compress :开发服务器是否启动gzip等压缩
 * port：配置开发服务器监听的端口
 * proxy: 开启跨域配置代理
+* hot: true 开启HMR热更新
+* hotOnly: true   即使html功能没有生效，也不让浏览器自动刷新
+
+注：开启HMR热更新，需配合webpack自带的HotModuleReplacementPlugin插件一起使用
+
+
+
 
 
 

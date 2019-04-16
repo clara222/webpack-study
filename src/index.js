@@ -5,4 +5,4 @@ img.src = pic
 img.classList.add('avatar')
 document.body.append(img)
 var root = document.getElementById('root')
-root.innerHTML='<div class="iconfont icon-icon_collect"></div>'
+root.innerHTML='<div class="iconfont icon-icon_collect color"></div>'
