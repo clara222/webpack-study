@@ -1,4 +1,3 @@
-# webpack-study
 1. webpack是一个**模块打包工具**
 ```
 npx webpack ./src/index.js
@@ -42,3 +41,10 @@ img.classList.add('avatar')
 import style from './scss/index.scss'
 img.classList.add(style.avatar)
 ```
+7. plugins
+
+plugin可以在webpack运行到某个时刻的时候，帮我们做一些事情（在某些打包节点上做一些工作）
+
+* html-webpack-plugin会在打包结束后，自动生成一个html文件，并把打包生成的js自动引入到这个html文件中
+* clean-webpack-plugin会在打包时自动帮我们把dist目录删除，然后再执行打包。这样避免来回手动删包
+
