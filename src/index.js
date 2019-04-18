@@ -1,4 +1,4 @@
-import "@babel/polyfill";
+// import "@babel/polyfill";
 import pic from './images/timg.jpg'
 import './scss/index.scss'
 var img = new Image()

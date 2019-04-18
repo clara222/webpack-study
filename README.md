@@ -87,7 +87,7 @@ output: {
 ```
 npm i webpack-dev-server –D
 ```
-webpack-dev-server是将文件打包到内存中，有助于开发
+webpack-dev-server是将文件**打包到内存中**，有助于开发
 
 在webpack.config.js 中，添加 ```devServer:{ }```
 * contentBase :配置开发服务运行时的文件根目录
@@ -100,6 +100,64 @@ webpack-dev-server是将文件打包到内存中，有助于开发
 * hotOnly: true   即使html功能没有生效，也不让浏览器自动刷新
 
 注：开启HMR热更新，需配合webpack自带的HotModuleReplacementPlugin插件一起使用
+11. babel的使用
+
+参见：https://www.babeljs.cn/setup#installation
+
+引入babel-polyfill会让包变得很大，所以需要按需引入，配合preset-env，配置```useBuiltIns: 'usage' ```选项
+
+useBuiltIns打包时根据业务代码需求来注入babel-polyfill里面对应的内容，没有用到的es6 特性不会被打包，所以打包后的代码体积会明显减小
+
+babel-polyfill会通过全局变量的方式来注入promise、map这些es6语法，这样会污染到全局环境，如果是自己做组件库，自己开发第三方模块的话，就不太适合用babel-polyfill来打包。我们使用transform-runtime来进行打包，它不存在全局变量污染这种情况，配置```corejs: 2```选项（需安装```runtime-corejs2```）。
+* 业务代码： 配置preset-env，使用babel-polyfill
+```
+npm i babel-loader @babel/core @babel/preset-env -D
+// 生产依赖，兼容低版本浏览器
+npm install --save @babel/polyfill
+
+{ 
+    test: /\.js$/, 
+    exclude: /node_modules/, 
+    loader: "babel-loader",
+    options: {
+      "presets": [["@babel/preset-env",{
+        useBuiltIns: 'usage'
+      }]]  
+    }
+}
+
+// 在业务代码运行之前最顶部导入
+import "@babel/polyfill";
+```
+在编译时发现报如下错：
+```
+Module not found: Error: Can't resolve 'core-js/es6'
+```
+解决方案：
+```
+npm i -D core-js@2.5.7
+```
+参考：https://stackoverflow.com/questions/55308769/module-not-found-error-cant-resolve-core-js-es6
+* 封装组件库：使用plugin-transform-runtime插件
+```
+npm install --save-dev @babel/plugin-transform-runtime
+npm install --save @babel/runtime
+npm install --save @babel/runtime-corejs2
+
+{
+  "plugins": [
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "corejs": 2, // 这里要改成2
+        "helpers": true,
+        "regenerator": true,
+        "useESModules": false
+      }
+    ]
+  ]
+}
+```
 
 
 
