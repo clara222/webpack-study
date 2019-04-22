@@ -30,7 +30,7 @@ webpack默认只打包js文件，其他的CSS、JPG等静态资源需要安装lo
 * 自动添加css浏览器厂商前缀的loader: ```postcss-loader```，使用postcss-loader需配置```postcss-config.js```
 * 使用css-loader的```options {importLoaders: 2}```可以保证，在一个 scss文件里通过import引入的另一个scss文件，都会依次从下往上执行每一个loader
 * css Module: css-loader的```options {modules: true}```
-  开启**css模块化**打包，开启后，代码内引入css变为对象的引入方式：
+开启**css模块化**打包，开启后，代码内引入css变为对象的引入方式：
 
 ```
 import './scss/index.scss'
@@ -40,6 +40,7 @@ img.classList.add('avatar')
 ```
 import style from './scss/index.scss'
 img.classList.add(style.avatar)
+
 ```
 7. plugins
 
@@ -158,6 +159,15 @@ npm install --save @babel/runtime-corejs2
   ]
 }
 ```
+12.webpack实现对react框架代码的打包
+
+*  因为写的是业务代码，所以使用babel-polyfill配置preset-env
+*  安装react、react-dom
+*  ```npm install --save-dev @babel/preset-react```
+*  在.babelrc上增加配置```{"presets": ["@/babel/preset-react"]}```
+*  babel的语法转换顺序：从下到上，从右往左
+
+
 
 
 
