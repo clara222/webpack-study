@@ -13,7 +13,9 @@ const foo = () => {
     resolve(99)
   })
 }
-
 console.log(foo());
 
 import './page'
+
+import {foo1} from './tree-shaking'
+foo1()

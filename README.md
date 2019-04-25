@@ -166,7 +166,33 @@ npm install --save @babel/runtime-corejs2
 *  ```npm install --save-dev @babel/preset-react```
 *  在.babelrc上增加配置```{"presets": ["@/babel/preset-react"]}```
 *  babel的语法转换顺序：从下到上，从右往左
+13. tree-shaking
 
+概念：webpack在打包时默认会将所有的业务代码打包，而我们常常需要的是import引入什么，打包什么，而不是全部打包。webpack 2.0之后引入tree-shaking，实际上就是把一个模块里没用的东西都去除掉。**Tree-shaking只支持ES module的引入**
+* 在webpack(开发环境)中配置
+```
+optimization: {
+    usedExports: true
+}
+```
+* 在package.json中配置
+```
+{
+    "sideEffects": false  //对所有模块进行tree-shaking
+}
+```
+这里注意：因为babel-polyfill并没有直接导出模块，他的方法都挂在window下，使用tree-shaking打包会被直接忽略掉，这个时候打包就会出错。所以需在package.json中做特殊设置
+```
+{
+    "sideEffects": ["@babel/poly-fill"] //表示打包时不对babel-polyfill做tree-shaking
+}
+```
+另外，css文件也不需要做tree-shaking，所以还要进行如下设置
+```
+{
+    "sideEffects": ["*.css"]
+}
+```
 
 
 

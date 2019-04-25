@@ -65,6 +65,9 @@ module.exports = {
       }
     ]
   },
+  optimization: {
+    usedExports: true
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: './index.html'

@@ -1,6 +1,7 @@
 {
   "name": "webpackdemo",
   "version": "1.0.0",
+  "sideEffects": ["@babel/poly-fill"] ,
   "description": "",
   "scripts": {
     "bundle": "webpack --watch",
