@@ -7,9 +7,9 @@ module.exports = {
   },
   module: {
     rules: [
-      { 
-        test: /\.js$/, 
-        exclude: /node_modules/, 
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
         loader: "babel-loader",
         // options: {
         //   "presets": [["@babel/preset-env",{
@@ -62,10 +62,14 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './index.html'
     }),
-    new CleanWebpackPlugin()
+    new CleanWebpackPlugin(
+      {
+        root: path.resolve(__dirname, '../dist')
+      }
+    )
   ],
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, '../dist')
   }
 }
