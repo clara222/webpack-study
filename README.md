@@ -30,7 +30,7 @@ webpack默认只打包js文件，其他的CSS、JPG等静态资源需要安装lo
 * 自动添加css浏览器厂商前缀的loader: ```postcss-loader```，使用postcss-loader需配置```postcss-config.js```
 * 使用css-loader的```options {importLoaders: 2}```可以保证，在一个 scss文件里通过import引入的另一个scss文件，都会依次从下往上执行每一个loader
 * css Module: css-loader的```options {modules: true}```
-开启**css模块化**打包，开启后，代码内引入css变为对象的引入方式：
+  开启**css模块化**打包，开启后，代码内引入css变为对象的引入方式：
 
 ```
 import './scss/index.scss'
@@ -193,17 +193,15 @@ optimization: {
     "sideEffects": ["*.css"]
 }
 ```
+14. development和production模式的区分打包
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+使用webpack-merge插件合并配置
+```
+npm i webpack-merge -D 
+```
+```
+const merge = require('webpack-merge')
+const devConfig = {...}
+const commonConfig = require('...')
+module.exports = merge(commonConfig, devConfig)
+```
