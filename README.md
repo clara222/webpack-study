@@ -205,3 +205,63 @@ const devConfig = {...}
 const commonConfig = require('...')
 module.exports = merge(commonConfig, devConfig)
 ```
+15. code-splitting代码分割
+
+webpack有些插件可以非常方便的帮我们实现code-splitting(代码分割和webpack无关)
+
+webpack中实现代码分割有两种方式：
+
+1） 同步代码分割
+
+只需要做```optimization: {splitChunks:{ chunks:'all'} }```的配置
+
+2）  异步代码分割
+
+无需做任何配置，会自动进行代码分割，放置到新的文件中。
+
+如果动态导入文件```() =>import('./views/home/Home.vue')```报错，则还需安装babel-plugin-dynamic-import-webpack插件，
+```
+npm install --save-dev @babeL/plugin-syntax-dynamic-import
+```
+配置pulgins  ```plugins: ["@babeL/plugin-syntax-dynamic-import"]```
+
+* webpack的代码分割，底层使用了SplitChunksPlugin插件
+* 配置参数详解：
+```
+optimization:{
+  splitChunks:{ //启动代码分割,不写有默认配置项
+     chunks: 'all',//参数all/initial/async，对所有/同步/异步进行代码分割
+      minSize: 30000, //大于30kb才会对代码分割
+      maxSize: 0,
+      minChunks: 1,//打包生成的文件，当一个模块至少用多少次时才会进行代码分割
+      maxAsyncRequests: 5,//同时加载的模块数最多是5个
+      maxInitialRequests: 3,//入口文件最多3个模块会做代码分割，否则不会
+      automaticNameDelimiter: '~',//文件自动生成的连接符
+      name: true,
+    cacheGroups: { //对同步代码走缓存组
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,//谁优先级高就把打包后的文件放到哪个组(数字越大优先级越高)
+		  filename:'vendors.js'
+	    }
+    },
+    default: {
+      minChunks: 2,
+      priority: -20,
+      reuseExistingChunk: true,//模块已经被打包过了，就不用再打包了，复用之前的就可以
+      filename:'common.js' //打包之后的文件名   
+    }
+  }
+}  
+```
+16. css文件代码分割
+webpack默认把css打包进js中，如果想把css文件从js中抽离出来打包，需要用到mini-css-extract-plugin
+如果希望单独生成的css文件被压缩，可以使用optimize-css-assets-webpack-plugin
+17. 我们打包的文件，浏览器是会缓存的，当我们修改了内容，用户刷新页面，此时加载的还是缓存中的文件。为了解决这个问题，我们需要修改production模式下的配置文件。
+contenthash 会根据文件内容生成hash值，当我们文件内容改变时，contenthash就会改变，从而通知浏览器重新向服务器请求文件。
+```
+ output: {
+    filename: '[name].[contenthash].js',
+    chunkFilename: '[name].[contenthash].js'
+ }
+```
